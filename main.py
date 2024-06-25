@@ -23,7 +23,7 @@ while True:
     img = cv.flip(img,1)
 
     imgbackground[162:162+480 , 55:55+640 ] = img
-    imgbackground[44:44+633 , 808:808+414 ] = imgModeList[3]
+    imgbackground[44:44+633 , 808:808+414 ] = imgModeList[1]
 
     cv.imshow("Face Attendance", imgbackground)
 
