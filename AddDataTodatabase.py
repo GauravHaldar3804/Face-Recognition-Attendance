@@ -20,7 +20,7 @@ data = {
         "Major":"Mechatronics",
         "Starting_Year":2022,
         "Total_Attendance":34,
-        "Standing":"Good",
+        "Standing":"VG",
         "Year":2,
         "Last_Attendance_time":"2024-4-29 00:54:34"
     },
@@ -30,7 +30,7 @@ data = {
         "Major":"BMM",
         "Starting_Year":2021,
         "Total_Attendance":45,
-        "Standing":"Good",
+        "Standing":"G",
         "Year":3,
         "Last_Attendance_time":"2024-4-14 00:54:34"
     },
@@ -40,7 +40,7 @@ data = {
         "Major":"Fashion Designing",
         "Starting_Year":2020,
         "Total_Attendance":64,
-        "Standing":"Bad",
+        "Standing":"B",
         "Year":4,
         "Last_Attendance_time":"2023-5-29 00:54:34"
     }
