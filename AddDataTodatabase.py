@@ -1,10 +1,14 @@
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
+from firebase_admin import storage
+import os
+import cv2 as cv
 
 cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred,{
-    "databaseURL":"https://facerecognitionrealtime-bd2e2-default-rtdb.firebaseio.com/"
+    "databaseURL":"https://facerecognitionrealtime-bd2e2-default-rtdb.firebaseio.com/",
+    "storageBucket": "facerecognitionrealtime-bd2e2.appspot.com"
 })
 
 ref = db.reference('Students')
@@ -43,3 +47,18 @@ data = {
 }
 for key , value in data.items():
     ref.child(key).set(value)
+
+folderPath = "Images"
+PathList = os.listdir(folderPath)
+
+imgList = []
+studentIds = []
+
+for path in PathList:
+    imgList.append(cv.imread(os.path.join(folderPath,path)))
+    studentIds.append(os.path.splitext(path)[0])
+
+    filename = f"{folderPath}/{path}"
+    bucket = storage.bucket()
+    blob = bucket.blob(filename)
+    blob.upload_from_filename(filename)
