@@ -77,6 +77,10 @@ while True:
                 imgbackground = cvzone.cornerRect(imgbackground,bbox,rt = 0)
                 
                 if counter == 0 :
+                    cvzone.putTextRect(imgbackground,"Loading",(275,480))
+                    cv.imshow("Face Attendance", imgbackground)
+
+                    cv.waitKey(1)
                     counter = 1
                     modetype = 1
 
