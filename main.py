@@ -32,6 +32,8 @@ imgModeList = []
 modetype = 0
 counter = 0
 id = -1
+imgStudent = []
+bucket = storage.bucket()
 
 for path in modePathList:
     imgModeList.append(cv.imread(os.path.join(folderPath,path)))
@@ -83,21 +85,57 @@ while True:
     if counter != 0:
 
         if counter == 1:
+            # Get the Data
+            
             studentInfo = db.reference(f"Students/{id}").get()
             print(studentInfo)
-        cv.putText(imgbackground , str(studentInfo["Total_Attendance"]),(1005,100),cv.FONT_HERSHEY_COMPLEX,1.5,(255,255,255),2)
-        cv.putText(imgbackground , str(id),(938,480),cv.FONT_HERSHEY_PLAIN,1,(255,255,255),2)
-        cv.putText(imgbackground , str(studentInfo["Major"]),(960,535),cv.FONT_HERSHEY_PLAIN,1,(255,255,255),2)
-        cv.putText(imgbackground , str(studentInfo["Standing"]),(903,645),cv.FONT_HERSHEY_PLAIN,1.5,(193,190,84),2)
-        cv.putText(imgbackground , str(studentInfo["Year"]),(1015,645),cv.FONT_HERSHEY_PLAIN,1.5,(193,190,84),2)
-        cv.putText(imgbackground , str(studentInfo["Starting_Year"]),(1137,645),cv.FONT_HERSHEY_PLAIN,1.5,(193,190,84),2)
+
+            # Get the Images from Storage
+            blob = bucket.get_blob(f"Images/{id}.png")
+            array = np.frombuffer(blob.download_as_string(),np.uint8)
+            imgStudent = cv.imdecode(array,cv.COLOR_BGRA2BGR)
+
+            # Update Data of Attendance
+            ref = db.reference(f"Students/{id}")
+            studentInfo["Total_Attendance"] += 1
+            ref.child("Total_Attendance").set(studentInfo["Total_Attendance"])
+
+            
         
-        (w,h),_ = cv.getTextSize(studentInfo["Name"],cv.FONT_HERSHEY_COMPLEX,1.2,2)
-        offset = (414-w)//2
-        cv.putText(imgbackground,str(studentInfo["Name"]),(808+offset,433),cv.FONT_HERSHEY_COMPLEX,1.2,(193,190,84),2)       
+        if 10<counter<20:
+            modetype = 2
+            imgbackground[44:44+633 , 808:808+414 ] = imgModeList[modetype]
+            
+
+        
+
+        if counter <= 10:
+            imgbackground[44:44+633 , 808:808+414 ] = imgModeList[modetype]
+            cv.putText(imgbackground , str(studentInfo["Total_Attendance"]),(1005,100),cv.FONT_HERSHEY_COMPLEX,1.5,(255,255,255),2)
+            cv.putText(imgbackground , str(id),(938,480),cv.FONT_HERSHEY_PLAIN,1,(255,255,255),2)
+            cv.putText(imgbackground , str(studentInfo["Major"]),(960,535),cv.FONT_HERSHEY_PLAIN,1,(255,255,255),2)
+            cv.putText(imgbackground , str(studentInfo["Standing"]),(903,645),cv.FONT_HERSHEY_PLAIN,1.5,(193,190,84),2)
+            cv.putText(imgbackground , str(studentInfo["Year"]),(1015,645),cv.FONT_HERSHEY_PLAIN,1.5,(193,190,84),2)
+            cv.putText(imgbackground , str(studentInfo["Starting_Year"]),(1137,645),cv.FONT_HERSHEY_PLAIN,1.5,(193,190,84),2)
+
+        
+        
+            (w,h),_ = cv.getTextSize(studentInfo["Name"],cv.FONT_HERSHEY_COMPLEX,1.2,2)
+            offset = (414-w)//2
+            cv.putText(imgbackground,str(studentInfo["Name"]),(808+offset,433),cv.FONT_HERSHEY_COMPLEX,1.2,(193,190,84),2) 
+            imgbackground[150:150+222 , 905:905+222] = imgStudent
+                  
 
 
         counter += 1
+
+        if counter>=20:
+            counter = 0
+            modetype = 0
+            studentInfo = []
+            imgStudent = []
+            imgbackground[44:44+633 , 808:808+414 ] = imgModeList[modetype]
+
             
             
 
