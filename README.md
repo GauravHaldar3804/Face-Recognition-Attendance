@@ -40,4 +40,3 @@ This project implements a face recognition system for marking student attendance
 8. Run `EncodeGenerator.py` to generate the encoded faces file (`EncodeFile.p`).
 9. Run `main.py` to start the application.
 
-git

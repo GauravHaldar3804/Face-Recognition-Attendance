@@ -86,6 +86,9 @@ while True:
 
             if not matches[matchIndex]:
                 print("Unknown Face")
+                modetype = 4
+                counter = 0
+                imgbackground[44:44+633 , 808:808+414 ] = imgModeList[modetype]
 
         if counter != 0:
 
